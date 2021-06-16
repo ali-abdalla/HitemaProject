@@ -16,8 +16,9 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto"></ul>
         <ul class="navbar-nav ml-auto">
-          <template v-if="user.loggedIn">
-            <div class="nav-item">{{user.data.displayName}}</div>
+          <template v-if="user.loggedIn">        
+            <div class="nav-item">Name: {{ user.data.displayName }} </div>
+            <div class="nav-item">Email: {{ user.data.email }} </div>
             <li class="nav-item">
               <a class="nav-link" @click.prevent="signOut">Sign out</a>
             </li>
@@ -51,8 +52,8 @@ export default {
         .auth()
         .signOut()
         .then(() => {
-          this.$router.replace({
-            name: "TodoList"
+          this.$router.push({
+            name: "home"
           });
         });
     }

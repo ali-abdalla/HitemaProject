@@ -94,7 +94,11 @@ export default {
             .updateProfile({
               displayName: this.form.name
             })
-            .then(() => {});
+            .then(() => {
+              this.form.email = ""
+              this.form.password= ""
+              this.$router.replace({ name: "TodoList" });
+            });
         })
         .catch(err => {
           this.error = err.message;

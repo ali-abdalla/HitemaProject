@@ -1,40 +1,35 @@
 <template>
-  <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
-    <div class="container">
-      <router-link to="/" class="navbar-brand">Vue Firebase Auth</router-link>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent"
-        aria-expanded="false"
-        aria-label
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto"></ul>
-        <ul class="navbar-nav ml-auto">
-          <template v-if="user.loggedIn">        
-            <div class="nav-item">Name: {{ user.data.displayName }} </div>
-            <div class="nav-item">Email: {{ user.data.email }} </div>
-            <li class="nav-item">
-              <a class="nav-link" @click.prevent="signOut">Sign out</a>
-            </li>
-          </template>
-          <template v-else>
-            <li class="nav-item">
-              <router-link to="login" class="nav-link">Login</router-link>
-            </li>
-            <li class="nav-item">
-              <router-link to="register" class="nav-link">Register</router-link>
-            </li>
-          </template>
-        </ul>
-      </div>
-    </div>
-  </nav>
+<div>
+     <v-menu offset-y v-if="user.loggedIn"   >
+      <template v-slot:activator="{ on, attrs }">
+        <v-avatar 
+          color="indigo"
+          v-bind="attrs"
+          v-on="on" 
+        >
+          <v-icon dark>
+            mdi-account-circle
+          </v-icon>
+        </v-avatar>
+      </template>
+      <v-list>
+        <v-list-item>
+          {{ user.data.displayName }}
+        </v-list-item>
+        <v-list-item>
+          {{ user.data.email }} 
+        </v-list-item>
+        <v-list-item>
+          <a class="nav-link" @click.prevent="signOut">Sign out</a>
+        </v-list-item>
+      </v-list>
+    </v-menu>
+  <template v-else>
+    <router-link to="login" class="white--text d-flex justify-center " >Login</router-link>
+    <router-link to="register" class="white--text d-flex justify-center ">Register</router-link>
+  </template>  
+</div>
+
 </template>
 <script>
 import { mapGetters } from "vuex";
@@ -42,7 +37,6 @@ import firebase from "firebase";
 export default {
   computed: {
     ...mapGetters({
-// map `this.user` to `this.$store.getters.user`
       user: "user"
     })
   },

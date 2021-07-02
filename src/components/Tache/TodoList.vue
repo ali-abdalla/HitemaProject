@@ -29,22 +29,30 @@
 <script>
 import Todo from "../Tache/Todo.vue";
 import CreateTodo from "../Tache/CreateTodo.vue";
+import {db } from "../../main.js"
+
 export default {
   props: {
     listName: String,
   },
   data() {
     return {
-      todos: [
-        { description: "Do the dishes", completed: false },
-        { description: "Take out the trash", completed: false },
-        { description: "Finish doing laundry", completed: false },
-      ],
+      todos: [],
     };
   },
+  created: function() {
+      db.collection('message').get()
+      .then(snapshot => {
+        snapshot.forEach(doc => {
+          let item = doc.data()
+          item.id = doc.id
+          console.log(item.text)
+          this.todos.push({ description: item.text, completed: item.completed, createdAt: item.createdAt})
+        })
+      })},
   methods: {
     addTodo(newTodo) {
-      this.todos.push({ description: newTodo, completed: false });
+      this.todos.push({ description: newTodo, completed: newTodo.completed, createdAt: new Date() });
     },
     toggleTodo(todo) {
       todo.completed = !todo.completed;

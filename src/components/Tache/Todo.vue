@@ -38,6 +38,7 @@ export default {
     };
   },
   props: {
+    createdAt: Date,
     description: String,
     completed: Boolean
   },

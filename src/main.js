@@ -6,6 +6,7 @@ import firebase from 'firebase/app'
 import VueRouter from 'vue-router'
 import router from './router'
 import store from './store'
+import vuetify from './plugins/vuetify'
 
 Vue.use(VueRouter)
 
@@ -13,21 +14,26 @@ Vue.prototype.$axios = axios;
 
 Vue.config.productionTip = false;
 const firebaseConfig = {
-  apiKey: "AIzaSyB6XlLI2qoCvIOI9mtop8G0P7BGp-MT8DU",
-  authDomain: "project-l3dev.firebaseapp.com",
-  projectId: "project-l3dev",
-  storageBucket: "project-l3dev.appspot.com",
-  messagingSenderId: "961662760228",
-  appId: "1:961662760228:web:eac54ca66dabc26e0e6fb1",
-  measurementId: "G-6WTJRDH4RN"
+  apiKey: "AIzaSyCrbfVUzpEuGYmeRZwXIqykLfn4wW8pXbM",
+  authDomain: "alib-c54fb.firebaseapp.com",
+  databaseURL: "https://alib-c54fb-default-rtdb.firebaseio.com",
+  projectId: "alib-c54fb",
+  storageBucket: "alib-c54fb.appspot.com",
+  messagingSenderId: "82948275570",
+  appId: "1:82948275570:web:83556e7fc58189527531eb",
+  measurementId: "G-NKJD4XQJ3L"
 };
 // // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 firebase.auth().onAuthStateChanged(user => {
   store.dispatch("fetchUser", user);
 });
+export const db = firebase.firestore()
+export const todosCollection = db.collection('message');
+export const queryMessage= db.collection('message')
 new Vue({
   render: h => h(App),
   router,
-  store,
+  vuetify,
+  store
 }).$mount('#app')

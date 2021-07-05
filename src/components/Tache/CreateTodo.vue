@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import { todosCollection } from '../../main.js';
+import { todosCollection } from '../../fire';
 export default {
   data() {
     return {

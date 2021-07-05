@@ -24,7 +24,7 @@
 <script>
 import Todo from "../Tache/Todo.vue";
 import CreateTodo from "../Tache/CreateTodo.vue";
-import {db } from "../../main.js"
+import {db } from "../../fire.js"
 
 export default {
   props: {

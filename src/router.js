@@ -5,6 +5,7 @@ import Register from '../src/components/Register.vue'
 import TodoList from '../src/components/Tache/TodoList.vue'
 import Login from '../src/components/Inscription/Login.vue'
 import Home from '../src/components/Home.vue'
+import Message from '../src/components/Chat/Message.vue'
 
 
 
@@ -28,6 +29,11 @@ export default new Router({
       path:'/todolist',
       name:'TodoList',
       component:TodoList
+    },
+    {
+      path:'/message',
+      name:'Message',
+      component:Message
     },
     {
       path:'/login',

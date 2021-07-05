@@ -1,10 +1,5 @@
 <template>
   <div class="container">
-    <div class="row">
-      <div class="col-12 py-5">
-        <h1>{{ listName }}</h1>
-      </div>
-    </div>
     <div class="row mb-3">
       <create-todo @on-new-todo="addTodo($event)" />
     </div>
@@ -40,13 +35,12 @@ export default {
       todos: [],
     };
   },
-  created: function() {
+  mounted: function() {
       db.collection('message').get()
       .then(snapshot => {
         snapshot.forEach(doc => {
           let item = doc.data()
-          item.id = doc.id
-          console.log(item.text)
+          this.todos.id = doc.id
           this.todos.push({ description: item.text, completed: item.completed, createdAt: item.createdAt})
         })
       })},
@@ -56,12 +50,24 @@ export default {
     },
     toggleTodo(todo) {
       todo.completed = !todo.completed;
+      db.collection('message').doc(this.todos.id).update({
+        completed:todo.completed,
+      });
     },
     deleteTodo(deletedTodo) {
-      this.todos = this.todos.filter(todo => todo !== deletedTodo);
+      db.collection('message').doc(this.todos.id).delete().then(() => {
+        this.todos = this.todos.filter(todo => todo !== deletedTodo);
+        console.log("Document successfully deleted!");
+      }).catch((error) => {
+        console.error("Error removing document: ", error);
+      });
     },
     editTodo(todo, newTodoDescription) {
-      todo.description = newTodoDescription;
+      db.collection('message').doc(this.todos.id).update({
+        description:newTodoDescription
+      })
+      console.log(newTodoDescription)
+      console.log(todo.description)
     },
   },
   components: { Todo, CreateTodo },

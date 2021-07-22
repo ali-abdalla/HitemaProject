@@ -1,24 +1,52 @@
 <template>
-  <div>
-    <div class="message-body mt-3">
-      <h3>Chat</h3>
-      <h5>Welcome {{ user.data.displayName }}!</h5>
-      <div class="card">
-        <div class="card-body">
-          <div
-            class="border pl-2 pt-1 ml-2 message-text mb-2"
-            v-for="message in messages"
-            :key="message"
-          >
-            <span class="mg-text">{{ message.username }}</span>
-            <p class="message pt-1">{{ message.text }}</p>
-          </div>
-        </div>
-      </div>
-      <input v-model="showMessage" type="text" class="mt-3 mr-2 pl-2 pr-2" />
-      <button class="btn btn-primary" @click="sendMessage">Send</button>
-    </div>
-  </div>
+  <v-container class="fill-height">
+    <v-layout column class="fill-height">
+      <v-content>
+        <v-container fluid fill-height>
+          <v-layout align-center justify-center>
+            <v-flex xs12 sm8 md4>
+              <v-card class="elevation-12" color="#DCDCDC">
+                <v-toolbar dark color="#DCDCDC">
+                  <v-toolbar-title>Chat</v-toolbar-title>
+                </v-toolbar>
+                <v-card-text>
+                  <v-list ref="chat" id="logs">
+                    <template v-for="message in messages">
+                      <v-subheader v-if="message" :key="message">
+                        <strong>{{ message.username }}: </strong> 
+                        {{ message.text }}
+                      </v-subheader>
+                    </template>
+                  </v-list>
+                </v-card-text>
+                <v-flex>
+                  <v-card-actions>
+                    <v-container>
+                      <v-row>
+                        <v-col>
+                          <v-form @submit.prevent="sendMessage">
+                            <v-text-field
+                              v-model="showMessage"
+                              label="Message"
+                              single-line
+                              solo-inverted
+                            ></v-text-field>
+                            <v-btn fab dark small color="primary" type="submit">
+                              <v-icon dark>send</v-icon>
+                            </v-btn>
+                          </v-form>
+                        </v-col>
+                      </v-row>
+                    </v-container>
+                  </v-card-actions>
+                </v-flex>
+              </v-card>
+            </v-flex>
+          </v-layout>
+        </v-container>
+      </v-content>
+    </v-layout>
+  </v-container>
 </template>
 
 <script>
@@ -28,107 +56,56 @@ export default {
   name: "Message",
   computed: {
     ...mapGetters({
-      user: "user"
-    })
+      user: "user",
+    }),
   },
   data() {
     return {
       showMessage: "",
-      messages: []
+      messages: [],
     };
   },
   methods: {
-    updateUsername() {
-
-    },
+    updateUsername() {},
     sendMessage() {
       const message = {
         text: this.showMessage,
-        username: this.user.data.displayName
+        username: this.user.data.displayName,
       };
-      fire
-        .database()
-        .ref("messages")
-        .push(message);
+      fire.database().ref("messages").push(message);
       this.showMessage = "";
-    }
+    },
   },
   mounted() {
     let viewMessage = this;
     const itemsRef = fire.database().ref("messages");
-    itemsRef.on("value", snapshot => {
+    itemsRef.on("value", (snapshot) => {
       let data = snapshot.val();
       let messages = [];
       console.log(data);
-      Object.keys(data).forEach(key => {
+      Object.keys(data).forEach((key) => {
         messages.push({
           id: key,
           username: data[key].username,
-          text: data[key].text
+          text: data[key].text,
         });
       });
       viewMessage.messages = messages;
     });
-  }
+  },
 };
 </script>
 <style>
 @import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic|Material+Icons");
-#app {
-  font-family: "Roboto", sans-serif;
-  font-size: 18px;
+
+.v-card {
+  display: flex !important;
+  flex-direction: column;
 }
-.login {
-  background: #fff;
-  width: 40%;
-  height: 50vh;
-  margin: auto;
-  padding-left: 20px;
-  padding-right: 20px;
-}
-h3 {
-  font-size: 30px;
-  text-align: center;
-}
-input {
-  width: 100%;
-  border-radius: 4px;
-  border: 1px solid rgb(156, 156, 156);
-  padding-left: 2px;
-  padding-right: 2px;
-}
-.message-body {
-  width: 40%;
-  height: 80vh;
-  margin: auto;
-}
-.message-text {
-  min-width: 10%;
-  border-radius: 4px;
-}
-.message {
-  font-size: 14px;
-}
-.mg-text {
-  color: rgb(0, 195, 255);
-  font-weight: bolder;
-}
-.message-body input {
-  width: 80%;
-  border-radius: 4px;
-  border: 1px solid rgb(156, 156, 156);
-  height: 6vh;
-  padding-left: 2px;
-  padding-right: 2px;
-}
-.card {
-  width: 100%;
-  height: 75vh;
-  margin: auto;
-}
-.card-body {
-  min-height: 50vh;
-  overflow-x: scroll;
+
+.v-card__text {
+  flex-grow: 1;
+  overflow: auto;
 }
 </style>
 

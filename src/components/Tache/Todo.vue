@@ -34,13 +34,13 @@ export default {
   data() {
     return {
       isEditing: false,
-      newTodoDescription: ""
+      newTodoDescription: "",
     };
   },
   props: {
     createdAt: Date,
     description: String,
-    completed: Boolean
+    completed: Boolean,
   },
   methods: {
     startEditing() {
@@ -55,8 +55,8 @@ export default {
     finishEditing() {
       this.isEditing = false;
       this.$emit("on-edit", this.newTodoDescription);
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>

@@ -25,6 +25,7 @@
 import Todo from "../Tache/Todo.vue";
 import CreateTodo from "../Tache/CreateTodo.vue";
 import {db } from "../../fire.js"
+import { mapGetters } from "vuex";
 
 export default {
   props: {
@@ -35,18 +36,23 @@ export default {
       todos: [],
     };
   },
+  computed: {
+    ...mapGetters({
+      user: "user"
+    })
+  },
   mounted: function() {
       db.collection('message').get()
       .then(snapshot => {
         snapshot.forEach(doc => {
           let item = doc.data()
           this.todos.id = doc.id
-          this.todos.push({ description: item.text, completed: item.completed, createdAt: item.createdAt})
+          this.todos.push({ description: item.text, completed: item.completed, createdAt: item.createdAt,writted:item.writted})
         })
       })},
   methods: {
     addTodo(newTodo) {
-      this.todos.push({ description: newTodo, completed: newTodo.completed, createdAt: new Date() });
+      this.todos.push({ description: newTodo, completed: newTodo.completed, createdAt: new Date(),writted:newTodo.writted });
     },
     toggleTodo(todo) {
       todo.completed = !todo.completed;
@@ -62,12 +68,14 @@ export default {
         console.error("Error removing document: ", error);
       });
     },
-    editTodo(todo, newTodoDescription) {
+    editTodo(todo,newTodoDescription) {
       db.collection('message').doc(this.todos.id).update({
-        description:newTodoDescription
+        description:newTodoDescription,
+        writted:this.user.data.displayName
       })
-      console.log(newTodoDescription)
-      console.log(todo.description)
+      this.todos.description =newTodoDescription;
+      this.todos.writted =this.user.data.displayName;
+      console.log(todo);
     },
   },
   components: { Todo, CreateTodo },

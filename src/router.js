@@ -6,6 +6,7 @@ import TodoList from '../src/components/Tache/TodoList.vue'
 import Login from '../src/components/Inscription/Login.vue'
 import Home from '../src/components/Home.vue'
 import Message from '../src/components/Chat/Message.vue'
+import Calendar from '../src/components/Calendar.vue'
 
 
 
@@ -17,7 +18,7 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'App',
+      name: 'Home',
       component: Home
     },
     {
@@ -39,6 +40,11 @@ export default new Router({
       path:'/login',
       name:'login',
       component:Login
-    }
+    },
+    {
+      path:'/calendar',
+      name:'Calendar',
+      component:Calendar
+    },
   ]
 })

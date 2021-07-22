@@ -1,6 +1,7 @@
 <template>
-<div>
-     <v-menu offset-y v-if="user.loggedIn"   >
+
+<div>     
+    <v-menu offset-y v-if="user.loggedIn">
       <template v-slot:activator="{ on, attrs }">
         <v-avatar 
           color="indigo"
@@ -17,19 +18,22 @@
           {{ user.data.displayName }}
         </v-list-item>
         <v-list-item>
-          {{ user.data.email }} 
+          {{ user.data.email }}
         </v-list-item>
         <v-list-item>
           <a class="nav-link" @click.prevent="signOut">Sign out</a>
         </v-list-item>
       </v-list>
     </v-menu>
-  <template v-else>
-    <router-link to="login" class="white--text d-flex justify-center " >Login</router-link>
-    <router-link to="register" class="white--text d-flex justify-center ">Register</router-link>
-  </template>  
+    <template v-else>
+      <router-link to="login" class="white--text d-flex justify-center"
+        >Login</router-link
+      >
+      <router-link to="register" class="white--text d-flex justify-center"
+        >Register</router-link
+      >
+    </template>
 </div>
-
 </template>
 <script>
 import { mapGetters } from "vuex";
@@ -37,8 +41,8 @@ import firebase from "firebase";
 export default {
   computed: {
     ...mapGetters({
-      user: "user"
-    })
+      user: "user",
+    }),
   },
   methods: {
     signOut() {
@@ -47,10 +51,10 @@ export default {
         .signOut()
         .then(() => {
           this.$router.push({
-            name: "home"
+            name: "Home",
           });
         });
-    }
-  }
+    },
+  },
 };
 </script>

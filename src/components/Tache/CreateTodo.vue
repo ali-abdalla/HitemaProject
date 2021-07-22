@@ -10,33 +10,40 @@
 </template>
 
 <script>
-import { todosCollection } from '../../fire';
+import { todosCollection } from "../../fire";
+import { mapGetters } from "vuex";
 export default {
   data() {
     return {
-      newTodo: '',
-      errors:''
+      newTodo: "",
+      errors: "",
     };
+  },
+  computed: {
+    ...mapGetters({
+      user: "user",
+    }),
   },
   methods: {
     addTodo() {
-      todosCollection.add({
-        text: this.newTodo,
-        completed: false,
-        createdAt: new Date()
-      })
-      .then(function(docRef) {
-        console.log("Document written with ID: ", docRef.id);
-      })
-      .catch(function(error) {
-        console.error("Error adding document: ", error);
-      });
-    
+      todosCollection
+        .add({
+          text: this.newTodo,
+          completed: false,
+          createdAt: new Date(),
+          writted: this.user.data.displayName,
+        })
+        .then(function (docRef) {
+          console.log("Document written with ID: ", docRef.id);
+        })
+        .catch(function (error) {
+          console.error("Error adding document: ", error);
+        });
+
       if (this.newTodo.length > 0) {
         this.$emit("on-new-todo", this.newTodo);
       }
     },
-
-  }
+  },
 };
 </script>

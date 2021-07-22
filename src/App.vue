@@ -2,23 +2,14 @@
   <v-app>
     <v-app-bar
       app
-      color="primary"
+      color="#DCDCDC"
     >
-      <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-          transition="scale-transition"
-          width="40"
-        />
-      </div>
 
+        
+        <router-link dark v-if="user.loggedIn" to="/"><v-icon > mdi-arrow-left </v-icon></router-link>
       <v-spacer></v-spacer>
       <navbar />
     </v-app-bar>
-
     <v-main>
       <router-view></router-view>
     </v-main>
@@ -27,9 +18,14 @@
 
 <script>
 import navbar from "../src/components/Navbar";
+import { mapGetters } from "vuex";
 export default {
   name: 'App',
-
+  computed: {
+    ...mapGetters({
+      user: "user",
+    }),
+  },
   components: {
     navbar
   },
